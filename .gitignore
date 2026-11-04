@@ -1,0 +1,21 @@
+# Salidas de compilacion
+firmware/build/
+build/
+dist/
+debug/
+*.p1
+*.d
+*.sym
+*.cmf
+*.cof
+*.hxl
+*.lst
+*.map
+*.rlf
+*.sdb
+*.s
+
+# Temporales de Proteus y Word
+*.pdsbak
+Project Backups/
+~$*
