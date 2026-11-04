@@ -15,10 +15,9 @@ Estación de temperatura y humedad simulada en Proteus 8. Lee un sensor DHT11 ca
 | `firmware/original/main_original.c` | Código original, para comparar |
 | `firmware/build.bat` | Compila `main.c` con XC8 |
 | `hex/termometro_depurado.hex` | Firmware ya compilado, listo para cargar en Proteus |
+| `proteus/termometro_analitico_16f887.pdsprj` | Proyecto de Proteus, requiere los cambios indicados abajo |
 | `proteus/CONEXIONES.md` | Lista de conexiones del circuito |
 | `docs/` | Informe de simulación en PDF y Word |
-
-> **Falta el proyecto de Proteus (`.pdsprj`).** Mientras se agrega, el circuito se puede montar con `proteus/CONEXIONES.md`.
 
 ## Requisitos
 
@@ -27,12 +26,13 @@ Estación de temperatura y humedad simulada en Proteus 8. Lee un sensor DHT11 ca
 
 ## Cómo probarlo
 
-1. Abre Proteus y monta el circuito según `proteus/CONEXIONES.md`.
-2. Doble clic en U1 (PIC16F887):
-   - **Program File:** `hex/termometro_depurado.hex`
-   - **Processor Clock Frequency:** `20MHz`
-3. Doble clic en SD1 y, en **Card Image File**, indica una ruta a un archivo `.mmc` dentro de una carpeta existente. Una ruta inexistente provoca el error `Fatal simulation error(s) encountered`.
-4. Ejecuta la simulación.
+El proyecto incluido es la versión original y necesita tres cambios antes de simular. El reloj de U1 ya está en 20 MHz.
+
+1. Abre `proteus/termometro_analitico_16f887.pdsprj` en Proteus.
+2. Doble clic en **U1 (PIC16F887)** y, en **Program File**, selecciona `hex/termometro_depurado.hex`. La ruta guardada es de MPLAB X y no existe.
+3. Doble clic en **SD1** y, en **Card Image File**, escribe `sdcard.mmc`. La ruta guardada no existe y provoca el error `Fatal simulation error(s) encountered`.
+4. Borra el cable que sale del **pin 24 (RC5)** y conecta el **pin 17 (RC2)** a la línea **DATA** del DHT11. El cable cruza SCL y SDA, pero no debe quedar un punto de unión en esos cruces.
+5. Guarda y ejecuta la simulación.
 
 ### Qué se espera ver
 
@@ -55,8 +55,8 @@ Botones: RB4 vista anterior, RB6 vista siguiente, RB5 tomar una muestra ahora.
 
 ## Estado del proyecto
 
-- **Error E1 identificado:** el circuito simulado conectaba DATA a RC5 (pin 24), pero el firmware lee RC2 (pin 17). El detalle está en la sección 5 del informe.
-- **Corrección pendiente de confirmar:** conectar DATA al pin 17. Todavía no se ha repetido la simulación con este cambio.
+- **Error E1 identificado:** el proyecto de Proteus conecta DATA a RC5 (pin 24), pero el firmware lee RC2 (pin 17). El detalle está en la sección 5 del informe.
+- **Corrección pendiente de confirmar:** el proyecto se subió sin modificar. Todavía no se ha repetido la simulación con DATA en el pin 17.
 - **Código depurado sin simular:** `main.c` compila sin errores, pero aún no se ha ejecutado en Proteus. Si falla, compara con `firmware/original/main_original.c`.
 - **DS1307 ausente:** el reloj no estaba en el esquemático original. Sin él, la vista RELOJ muestra `--`.
 
